@@ -33,7 +33,7 @@ function Hero(game, x, y) {
     this.animations.play('stop');
 
 // create our virtual game controller buttons
-    buttonjump = this.game.add.button(750, 450, 'buttonjump', null, this, 0, 1, 0, 1);  //game, x, y, key, callback, callbackContext, overFrame, outFrame, downFrame, upFrame
+    buttonjump = this.game.add.button(850, 450, 'buttonjump', null, this, 0, 1, 0, 1);  //game, x, y, key, callback, callbackContext, overFrame, outFrame, downFrame, upFrame
     buttonjump.fixedToCamera = true;  //our buttons should stay on the same place
     buttonjump.events.onInputOver.add(function(){jumpy=true;});
     buttonjump.events.onInputOut.add(function(){jumpy=false;});
