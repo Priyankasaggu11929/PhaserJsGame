@@ -1,9 +1,12 @@
+//some global vars 
 
 var nextJump = 0;
 
 var lefty=false;
 var righty=false;
 var jumpy=false;
+
+
 
 
 // =============================================================================
@@ -31,34 +34,6 @@ function Hero(game, x, y) {
     this.animations.add('die', [5, 6, 5, 6, 5, 6, 5, 6], 12); // 12fps no loop
     // starting animation
     this.animations.play('stop');
-
-// create our virtual game controller buttons
-    buttonjump = this.game.add.button(890, 500, 'buttonjump', null, this, 0, 1, 0, 1);  //game, x, y, key, callback, callbackContext, overFrame, outFrame, downFrame, upFrame
-    buttonjump.fixedToCamera = true;  //our buttons should stay on the same place
-    buttonjump.events.onInputOver.add(function(){jumpy=true;});
-    buttonjump.events.onInputOut.add(function(){jumpy=false;});
-    buttonjump.events.onInputDown.add(function(){jumpy=true;});
-    buttonjump.events.onInputUp.add(function(){jumpy=false;});
-
-
-    buttonleft = this.game.add.button(0, 472, 'buttonhorizontal', null, this, 0, 1, 0, 1);
-    buttonleft.fixedToCamera = true;
-    buttonleft.events.onInputOver.add(function(){lefty=true;});
-    buttonleft.events.onInputOut.add(function(){lefty=false;});
-    buttonleft.events.onInputDown.add(function(){lefty=true;});
-    buttonleft.events.onInputUp.add(function(){lefty=false;});
-
-
-    buttonright = this.game.add.button(96, 472, 'buttonhorizontal', null, this, 0, 1, 0, 1);
-    buttonright.fixedToCamera = true;
-    buttonright.events.onInputOver.add(function(){righty=true;});
-    buttonright.events.onInputOut.add(function(){righty=false;});
-    buttonright.events.onInputDown.add(function(){righty=true;});
-    buttonright.events.onInputUp.add(function(){righty=false;});
-
-
-    if (this.game.input.currentPointers == 0 && !game.input.activePointer.isMouse){  righty=false; lefty=false; jumpy=false;} //this works around a "bug" where a button gets stuck in pressed state
-
 
 
     
@@ -141,7 +116,7 @@ Hero.prototype._getAnimationName = function () {
         name = 'stop';
     }
     // jumping
-    else if (this.body.velocity.y < 0|| jumpy) {
+    else if (this.body.velocity.y < 0) {
         name = 'jump';
     }
     // falling
@@ -235,9 +210,6 @@ LoadingState.preload = function () {
     this.game.load.spritesheet('spider', 'images/spider.png', 42, 32);
     this.game.load.spritesheet('door', 'images/door.png', 42, 66);
     this.game.load.spritesheet('icon:key', 'images/key_icon.png', 34, 30);
-    this.game.load.spritesheet('buttonvertical', 'images/button-vertical.png',64,64);
-    this.game.load.spritesheet('buttonhorizontal', 'images/button-horizontal.png',96,64);
-    this.game.load.spritesheet('buttonjump', 'images/button-round-b.png',96,96);
 
     this.game.load.audio('sfx:jump', 'audio/jump.wav');
     this.game.load.audio('sfx:coin', 'audio/coin.wav');
@@ -245,10 +217,6 @@ LoadingState.preload = function () {
     this.game.load.audio('sfx:stomp', 'audio/stomp.wav');
     this.game.load.audio('sfx:door', 'audio/door.wav');
     this.game.load.audio('bgm', ['audio/bgm.mp3', 'audio/bgm.ogg']);
-
-// fullscreen setup
-    this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-    this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT;
 };
 
 LoadingState.create = function () {
@@ -334,10 +302,10 @@ PlayState._handleCollisions = function () {
 };
 
 PlayState._handleInput = function () {
-    if (this.keys.left.isDown || lefty) { // move hero left
+    if (this.keys.left.isDown) { // move hero left
         this.hero.move(-1);
     }
-    else if (this.keys.right.isDown || righty) { // move hero right
+    else if (this.keys.right.isDown) { // move hero right
         this.hero.move(1);
     }
     else { // stop
@@ -346,7 +314,7 @@ PlayState._handleInput = function () {
 
     // handle jump
     const JUMP_HOLD = 200; // ms
-    if (this.keys.up.downDuration(JUMP_HOLD) || jumpy) {
+    if (this.keys.up.downDuration(JUMP_HOLD)) {
         let didJump = this.hero.jump();
         if (didJump) { this.sfx.jump.play(); }
     }
