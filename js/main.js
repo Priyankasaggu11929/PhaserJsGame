@@ -538,7 +538,9 @@ PlayState._createHud = function () {
 // =============================================================================
 
 window.onload = function () {
-    let game = new Phaser.Game(960, 600, Phaser.AUTO, 'game');
+    //let game = new Phaser.Game(960, 600, Phaser.AUTO, 'game');
+    let game = new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.AUTO, '');
+
     game.state.add('play', PlayState);
     game.state.add('loading', LoadingState);
     game.state.start('loading');
